@@ -11,9 +11,9 @@ class ExtractMessages {
         CompilerOptions options = new CompilerOptions();
         options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
 
-        GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(args[1]);
+        GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(args[0]);
         JsMessageExtractor extractor = new JsMessageExtractor(idGenerator, JsMessage.Style.CLOSURE, options);
-        Collection<JsMessage> messages = extractor.extractMessages(SourceFile.fromFile(args[2]));
+        Collection<JsMessage> messages = extractor.extractMessages(SourceFile.fromFile(args[1]));
 
         System.out.println("{");
         System.out.println("\"@@locale\": \"es\",");

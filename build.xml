@@ -170,6 +170,9 @@
       <zipfileset dir="${arb-extractor.output.dir}"/>
       <zipfileset file="${basedir}/META-INF/MANIFEST.MF" prefix="META-INF"/>
       <zipfileset src="${basedir}/lib/compiler.jar"/>
+      <manifest>
+        <attribute name="Main-Class" value="com.altiplaconsulting.arbextractor.ExtractMessages"/>
+      </manifest>
     </jar>
     <copy file="${temp.jar.path.arb-extractor.jar}" tofile="${artifact.temp.output.arb-extractor}/arb-extractor.jar"/>
   </target>
