@@ -2,11 +2,11 @@
   <artifact type="jar" name="arb-extractor">
     <output-path>$PROJECT_DIR$/build</output-path>
     <root id="archive" name="arb-extractor.jar">
-      <element id="library" level="project" name="Closure Compiler" />
       <element id="module-output" name="arb-extractor" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/compiler.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

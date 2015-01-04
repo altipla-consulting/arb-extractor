@@ -167,9 +167,9 @@
     <property name="artifact.temp.output.arb-extractor" value="${artifacts.temp.dir}/arb_extractor"/>
     <mkdir dir="${artifact.temp.output.arb-extractor}"/>
     <jar destfile="${temp.jar.path.arb-extractor.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-      <zipfileset file="${basedir}/lib/compiler.jar"/>
       <zipfileset dir="${arb-extractor.output.dir}"/>
       <zipfileset file="${basedir}/META-INF/MANIFEST.MF" prefix="META-INF"/>
+      <zipfileset src="${basedir}/lib/compiler.jar"/>
     </jar>
     <copy file="${temp.jar.path.arb-extractor.jar}" tofile="${artifact.temp.output.arb-extractor}/arb-extractor.jar"/>
   </target>
