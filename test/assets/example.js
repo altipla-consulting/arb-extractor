@@ -5,8 +5,8 @@
 var MSG_SIMPLE = goog.getMsg('Simple message');
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
-/** @desc Message with a placeholder for the bold word */
-var MSG_PLACEHOLDERS = goog.getMsg('Message with {$startBold}placeholders{$endBold}', {
+/** @desc Message with a placeholder for the bold word. áéíóú */
+var MSG_PLACEHOLDERS = goog.getMsg('Message with {$startBold}placeholders{$endBold} and áéíóú', {
     startBold: '<b>',
     endBold: '</b>',
 });
