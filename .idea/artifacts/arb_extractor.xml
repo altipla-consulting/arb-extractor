@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="arb-extractor">
-    <output-path>$PROJECT_DIR$/build/arb_extractor</output-path>
+    <output-path>$PROJECT_DIR$/build</output-path>
     <root id="archive" name="arb-extractor.jar">
       <element id="library" level="project" name="Closure Compiler" />
       <element id="module-output" name="arb-extractor" />

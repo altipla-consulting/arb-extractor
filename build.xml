@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="arb-extractor" default="all">
 
+
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
   <property name="skip.tests" value="true"/>
@@ -155,7 +156,7 @@
 
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.arb-extractor" value="${basedir}/build/arb_extractor"/>
+    <property name="artifact.output.arb-extractor" value="${basedir}/build"/>
     <mkdir dir="${artifacts.temp.dir}"/>
     <property name="temp.jar.path.arb-extractor.jar" value="${artifacts.temp.dir}/arb-extractor.jar"/>
   </target>
