@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Closure Compiler">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/compiler.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/compiler.jar!/" />
+    </SOURCES>
+  </library>
+</component>
