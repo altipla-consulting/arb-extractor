@@ -4,6 +4,9 @@
     <root id="archive" name="arb-extractor.jar">
       <element id="library" level="project" name="Closure Compiler" />
       <element id="module-output" name="arb-extractor" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
     </root>
   </artifact>
 </component>

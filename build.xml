@@ -2,6 +2,7 @@
 <project name="arb-extractor" default="all">
 
 
+  <property file="build.properties"/>
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
   <property name="skip.tests" value="true"/>
@@ -168,6 +169,7 @@
     <jar destfile="${temp.jar.path.arb-extractor.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
       <zipfileset file="${basedir}/lib/compiler.jar"/>
       <zipfileset dir="${arb-extractor.output.dir}"/>
+      <zipfileset file="${basedir}/META-INF/MANIFEST.MF" prefix="META-INF"/>
     </jar>
     <copy file="${temp.jar.path.arb-extractor.jar}" tofile="${artifact.temp.output.arb-extractor}/arb-extractor.jar"/>
   </target>
