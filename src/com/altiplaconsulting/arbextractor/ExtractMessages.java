@@ -2,8 +2,7 @@ package com.altiplaconsulting.arbextractor;
 
 import com.google.javascript.jscomp.*;
 
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,15 +14,13 @@ class ExtractMessages {
     private static List<JsMessage> extractedMessages = new ArrayList<JsMessage>();
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-        PrintStream out = new PrintStream(System.out, true, "UTF-8");
-
         CompilerOptions options = new CompilerOptions();
         options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
 
         GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(args[0]);
         JsMessageExtractor extractor = new JsMessageExtractor(idGenerator, JsMessage.Style.CLOSURE, options);
 
-        for (String filename : Arrays.copyOfRange(args, 1, args.length)) {
+        for (String filename : Arrays.copyOfRange(args, 2, args.length)) {
             Collection<JsMessage> messages = extractor.extractMessages(SourceFile.fromFile(filename));
             for (JsMessage message : messages) {
                 boolean found = false;
@@ -46,6 +43,9 @@ class ExtractMessages {
                 }
             }
         }
+
+        File file = new File(args[1]);
+        PrintStream out = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), true, "UTF-8");
 
         out.println("{");
         out.println("\t\"@@locale\": \"es\",");
