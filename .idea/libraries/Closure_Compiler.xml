@@ -6,6 +6,9 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lib/compiler.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../closure/closure-compiler/gen" />
+      <root url="file://$PROJECT_DIR$/../../closure/closure-compiler/src" />
+      <root url="file://$PROJECT_DIR$/../../closure/closure-compiler/test" />
     </SOURCES>
   </library>
 </component>

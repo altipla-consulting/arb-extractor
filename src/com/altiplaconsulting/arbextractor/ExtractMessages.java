@@ -20,6 +20,8 @@ class ExtractMessages {
         GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(args[0]);
         JsMessageExtractor extractor = new JsMessageExtractor(idGenerator, JsMessage.Style.CLOSURE, options);
 
+        PrintStream stdout = new PrintStream(System.out, true, "UTF-8");
+
         for (String filename : Arrays.copyOfRange(args, 2, args.length)) {
             Collection<JsMessage> messages = extractor.extractMessages(SourceFile.fromFile(filename));
             for (JsMessage message : messages) {
@@ -27,7 +29,7 @@ class ExtractMessages {
                 for (JsMessage extractedMessage : extractedMessages) {
                     if (extractedMessage.getId().equals(message.getId())) {
                         if (!extractedMessage.getDesc().equals(message.getDesc())) {
-                            throw new Error("different message descriptions with the same id: <" +
+                            stdout.println("different message descriptions with the same id: <" +
                                     extractedMessage.getDesc() + "> != <" + message.getDesc() + ">\n\tin files " +
                                     extractedMessage.getSourceName() + " and " + message.getSourceName() + "\n\t" +
                                     "with values: <" + extractedMessage.toString() + "> and <" + message.toString() +
@@ -52,7 +54,30 @@ class ExtractMessages {
         out.println();
 
         for (JsMessage message : extractedMessages) {
-            out.println("\t\"" + message.getId() + "\": \"" + message.toString() + "\",");
+            StringBuilder sb = new StringBuilder();
+            for (CharSequence part : message.parts()) {
+                if (part instanceof JsMessage.PlaceholderReference) {
+                    StringBuilder ph = new StringBuilder();
+                    ph.append('{');
+
+                    char[] name = ((JsMessage.PlaceholderReference) part).getName().toCharArray();
+                    for (char c : name) {
+                        if (Character.isUpperCase(c)) {
+                            ph.append('_');
+                        }
+
+                        ph.append(Character.toUpperCase(c));
+                    }
+
+                    ph.append('}');
+                    sb.append(ph.toString());
+                } else {
+                    sb.append(part.toString());
+                }
+            }
+            String value = sb.toString();
+
+            out.println("\t\"" + message.getId() + "\": \"" + value + "\",");
             out.println("\t\"@" + message.getId() + "\": {");
             out.println("\t\t\"type\": \"text\",");
             out.println("\t\t\"x-file\": \"" + message.getSourceName() + "\",");
