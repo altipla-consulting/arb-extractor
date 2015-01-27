@@ -20,30 +20,9 @@ class ExtractMessages {
         GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(args[0]);
         JsMessageExtractor extractor = new JsMessageExtractor(idGenerator, JsMessage.Style.CLOSURE, options);
 
-        PrintStream stdout = new PrintStream(System.out, true, "UTF-8");
-
         for (String filename : Arrays.copyOfRange(args, 2, args.length)) {
             Collection<JsMessage> messages = extractor.extractMessages(SourceFile.fromFile(filename));
-            for (JsMessage message : messages) {
-                boolean found = false;
-                for (JsMessage extractedMessage : extractedMessages) {
-                    if (extractedMessage.getId().equals(message.getId())) {
-                        if (!extractedMessage.getDesc().equals(message.getDesc())) {
-                            stdout.println("different message descriptions with the same id: <" +
-                                    extractedMessage.getDesc() + "> != <" + message.getDesc() + ">\n\tin files " +
-                                    extractedMessage.getSourceName() + " and " + message.getSourceName() + "\n\t" +
-                                    "with values: <" + extractedMessage.toString() + "> and <" + message.toString() +
-                                    ">");
-                        }
-
-                        found = true;
-                    }
-                }
-
-                if (!found) {
-                    extractedMessages.add(message);
-                }
-            }
+            extractedMessages.addAll(messages);
         }
 
         File file = new File(args[1]);
@@ -77,11 +56,11 @@ class ExtractMessages {
             }
             String value = sb.toString();
 
-            out.println("\t\"" + message.getId() + "\": \"" + value + "\",");
-            out.println("\t\"@" + message.getId() + "\": {");
+            out.println("\t\"" + message.getKey() + "\": \"" + value + "\",");
+            out.println("\t\"@" + message.getKey() + "\": {");
             out.println("\t\t\"type\": \"text\",");
             out.println("\t\t\"x-file\": \"" + message.getSourceName() + "\",");
-            out.println("\t\t\"x-key\": \"" + message.getKey() + "\",");
+            out.println("\t\t\"x-id\": \"" + message.getId() + "\",");
             out.println("\t\t\"x-original\": \"" + message.toString() + "\",");
             out.println("\t\t\"description\": \"" + message.getDesc() + "\"");
             out.println("\t},");
