@@ -82,6 +82,7 @@ class ExtractMessages {
             out.println("\t\t\"type\": \"text\",");
             out.println("\t\t\"x-file\": \"" + message.getSourceName() + "\",");
             out.println("\t\t\"x-key\": \"" + message.getKey() + "\",");
+            out.println("\t\t\"x-original\": \"" + message.toString() + "\",");
             out.println("\t\t\"description\": \"" + message.getDesc() + "\"");
             out.println("\t},");
             out.println();
