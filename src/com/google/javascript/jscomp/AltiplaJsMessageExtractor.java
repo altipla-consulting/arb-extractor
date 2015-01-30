@@ -79,12 +79,15 @@ public class AltiplaJsMessageExtractor {
         @Override
         void processJsMessage(JsMessage message,
                               JsMessageDefinition definition) {
-            JSDocInfo docInfo = definition.getMessageNode().getParent().getParent().getJSDocInfo();
-            String blockDescription = docInfo.getBlockDescription();
-
             String id = null;
-            if (blockDescription != null && blockDescription.startsWith("SOY MESSAGE ID: ")) {
-                id = blockDescription.substring("SOY MESSAGE ID: ".length()).trim();
+            if (definition.getMessageNode().getParent() != null &&
+                    definition.getMessageNode().getParent().getParent() != null) {
+                JSDocInfo docInfo = definition.getMessageNode().getParent().getParent().getJSDocInfo();
+                String blockDescription = docInfo.getBlockDescription();
+
+                if (blockDescription != null && blockDescription.startsWith("SOY MESSAGE ID: ")) {
+                    id = blockDescription.substring("SOY MESSAGE ID: ".length()).trim();
+                }
             }
 
             if (!message.isExternal()) {
