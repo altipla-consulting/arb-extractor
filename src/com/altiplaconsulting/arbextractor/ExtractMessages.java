@@ -7,21 +7,21 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 class ExtractMessages {
 
-    private static List<JsMessage> extractedMessages = new ArrayList<JsMessage>();
+    private static ArrayList<AltiplaJsMessage> extractedMessages = new ArrayList<AltiplaJsMessage>();
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         CompilerOptions options = new CompilerOptions();
         options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
+        options.setIdeMode(true);
 
         GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(args[0]);
-        JsMessageExtractor extractor = new JsMessageExtractor(idGenerator, JsMessage.Style.CLOSURE, options);
+        AltiplaJsMessageExtractor extractor = new AltiplaJsMessageExtractor(idGenerator, JsMessage.Style.CLOSURE, options);
 
         for (String filename : Arrays.copyOfRange(args, 2, args.length)) {
-            Collection<JsMessage> messages = extractor.extractMessages(SourceFile.fromFile(filename));
+            Collection<AltiplaJsMessage> messages = extractor.extractMessages(SourceFile.fromFile(filename));
             extractedMessages.addAll(messages);
         }
 
@@ -32,9 +32,9 @@ class ExtractMessages {
         out.println("\t\"@@locale\": \"es\",");
         out.println();
 
-        for (JsMessage message : extractedMessages) {
+        for (AltiplaJsMessage message : extractedMessages) {
             StringBuilder sb = new StringBuilder();
-            for (CharSequence part : message.parts()) {
+            for (CharSequence part : message.getMessage().parts()) {
                 if (part instanceof JsMessage.PlaceholderReference) {
                     StringBuilder ph = new StringBuilder();
                     ph.append('{');
@@ -56,13 +56,16 @@ class ExtractMessages {
             }
             String value = sb.toString();
 
-            out.println("\t\"" + message.getKey() + "\": \"" + value + "\",");
-            out.println("\t\"@" + message.getKey() + "\": {");
+            out.println("\t\"" + message.getMessage().getKey() + "\": \"" + value + "\",");
+            out.println("\t\"@" + message.getMessage().getKey() + "\": {");
             out.println("\t\t\"type\": \"text\",");
-            out.println("\t\t\"x-file\": \"" + message.getSourceName() + "\",");
-            out.println("\t\t\"x-id\": \"" + message.getId() + "\",");
-            out.println("\t\t\"x-original\": \"" + message.toString() + "\",");
-            out.println("\t\t\"description\": \"" + message.getDesc() + "\"");
+            out.println("\t\t\"x-file\": \"" + message.getMessage().getSourceName() + "\",");
+            out.println("\t\t\"x-id\": \"" + message.getMessage().getId() + "\",");
+            if (message.getSoyId() != null) {
+                out.println("\t\t\"x-soy-id\": \"" + message.getSoyId() + "\",");
+            }
+            out.println("\t\t\"x-original\": \"" + message.getMessage().toString() + "\",");
+            out.println("\t\t\"description\": \"" + message.getMessage().getDesc() + "\"");
             out.println("\t},");
             out.println();
         }
