@@ -80,9 +80,8 @@ public class AltiplaJsMessageExtractor {
         void processJsMessage(JsMessage message,
                               JsMessageDefinition definition) {
             String id = null;
-            if (definition.getMessageNode().getParent() != null &&
-                    definition.getMessageNode().getParent().getParent() != null) {
-                JSDocInfo docInfo = definition.getMessageNode().getParent().getParent().getJSDocInfo();
+            JSDocInfo docInfo = definition.getMessageNode().getParent().getParent().getJSDocInfo();
+            if (docInfo != null) {
                 String blockDescription = docInfo.getBlockDescription();
 
                 if (blockDescription != null && blockDescription.startsWith("SOY MESSAGE ID: ")) {
