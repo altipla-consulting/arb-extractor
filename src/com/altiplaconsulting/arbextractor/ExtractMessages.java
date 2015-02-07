@@ -1,31 +1,55 @@
 package com.altiplaconsulting.arbextractor;
 
 import com.google.javascript.jscomp.*;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 class ExtractMessages {
 
     private static ArrayList<AltiplaJsMessage> extractedMessages = new ArrayList<AltiplaJsMessage>();
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+        CliOptions cliOptions = new CliOptions();
+        CmdLineParser parser = new CmdLineParser(cliOptions);
+        try {
+            parser.parseArgument(args);
+        } catch (CmdLineException e) {
+            System.err.println(e.getMessage());
+            parser.printUsage(System.err);
+        }
+
         CompilerOptions options = new CompilerOptions();
         options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
         options.setIdeMode(true);
 
-        GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(args[0]);
+        if (!cliOptions.getEntryPoint().isEmpty()) {
+            DependencyOptions depOptions = new DependencyOptions();
+            depOptions.setDependencyPruning(true);
+            depOptions.setDependencySorting(true);
+            depOptions.setMoocherDropping(true);
+
+            List<String> entryPoints = new ArrayList<String>();
+            entryPoints.add(cliOptions.getEntryPoint());
+            depOptions.setEntryPoints(entryPoints);
+
+            options.setDependencyOptions(depOptions);
+        }
+
+        GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(cliOptions.getTranslationsProject());
         AltiplaJsMessageExtractor extractor = new AltiplaJsMessageExtractor(idGenerator, JsMessage.Style.CLOSURE, options);
 
-        for (String filename : Arrays.copyOfRange(args, 2, args.length)) {
+        for (String filename : cliOptions.getFiles()) {
             Collection<AltiplaJsMessage> messages = extractor.extractMessages(SourceFile.fromFile(filename));
             extractedMessages.addAll(messages);
         }
 
-        File file = new File(args[1]);
+        File file = new File(cliOptions.getOutputFile());
         PrintStream out = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)), true, "UTF-8");
 
         out.println("{");
