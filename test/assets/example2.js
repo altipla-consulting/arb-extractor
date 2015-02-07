@@ -2,7 +2,7 @@
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 /** @desc Simple message with no placeholders */
-var MSG_SIMPLE = goog.getMsg('Simple message');
+var MSG_SIMPLE2 = goog.getMsg('Simple message');
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 /** @desc Message with plurals */

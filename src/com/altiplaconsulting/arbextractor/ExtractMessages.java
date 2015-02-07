@@ -7,12 +7,9 @@ import org.kohsuke.args4j.CmdLineParser;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 class ExtractMessages {
-
-    private static ArrayList<AltiplaJsMessage> extractedMessages = new ArrayList<AltiplaJsMessage>();
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         CliOptions cliOptions = new CliOptions();
@@ -44,9 +41,9 @@ class ExtractMessages {
         GoogleJsMessageIdGenerator idGenerator = new GoogleJsMessageIdGenerator(cliOptions.getTranslationsProject());
         AltiplaJsMessageExtractor extractor = new AltiplaJsMessageExtractor(idGenerator, JsMessage.Style.CLOSURE, options);
 
+        List<SourceFile> sources = new ArrayList<SourceFile>(cliOptions.getFiles().size());
         for (String filename : cliOptions.getFiles()) {
-            Collection<AltiplaJsMessage> messages = extractor.extractMessages(SourceFile.fromFile(filename));
-            extractedMessages.addAll(messages);
+            sources.add(SourceFile.fromFile(filename));
         }
 
         File file = new File(cliOptions.getOutputFile());
@@ -56,7 +53,7 @@ class ExtractMessages {
         out.println("\t\"@@locale\": \"es\",");
         out.println();
 
-        for (AltiplaJsMessage message : extractedMessages) {
+        for (AltiplaJsMessage message : extractor.extractMessages(sources)) {
             StringBuilder sb = new StringBuilder();
             for (CharSequence part : message.getMessage().parts()) {
                 if (part instanceof JsMessage.PlaceholderReference) {
