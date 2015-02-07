@@ -17,6 +17,9 @@ public class CliOptions {
     @Option(name = "--closure_entry_point", usage = "entry point of the Closure application")
     private String entryPoint = "";
 
+    @Option(name = "--soy_entry_point", usage = "entry point of the Soy extracted messages")
+    private String soyEntryPoint = "";
+
     @Argument
     private List<String> files = new ArrayList<String>();
 
@@ -34,5 +37,9 @@ public class CliOptions {
 
     public String getEntryPoint() {
         return entryPoint;
+    }
+
+    public String getSoyEntryPoint() {
+        return soyEntryPoint;
     }
 }

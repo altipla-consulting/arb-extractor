@@ -33,6 +33,11 @@ class ExtractMessages {
 
             List<String> entryPoints = new ArrayList<String>();
             entryPoints.add(cliOptions.getEntryPoint());
+
+            if (!cliOptions.getSoyEntryPoint().isEmpty()) {
+                entryPoints.add(cliOptions.getSoyEntryPoint());
+            }
+
             depOptions.setEntryPoints(entryPoints);
 
             options.setDependencyOptions(depOptions);
