@@ -19,6 +19,7 @@ class ExtractMessages {
         } catch (CmdLineException e) {
             System.err.println(e.getMessage());
             parser.printUsage(System.err);
+            return;
         }
 
         CompilerOptions options = new CompilerOptions();
